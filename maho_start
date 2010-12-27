@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/share/maho/maho.py >> /var/log/maho.log 2>&1
