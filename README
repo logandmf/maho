@@ -1,10 +1,12 @@
 ## MAHO's IRC bot
+--------------------------------------------------------------
 
-A Simple IRC bot for #AINO channel on HighWay.net servers.
+ A Simple IRC bot for #AINO channel on HighWay.net servers.
+
 
 # Dependencies
-
-- python >=  2.5
-- sqlite3
-- pysqlite
-- python-irclib
+--------------------------------------------------------------
+ - python >=  2.5
+ - sqlite3
+ - pysqlite
+ - python-irclib
