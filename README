@@ -6,4 +6,5 @@ A Simple IRC bot for #AINO channel on HighWay.net servers.
 
 - python >=  2.5
 - sqlite3
+- pysqlite
 - python-irclib
