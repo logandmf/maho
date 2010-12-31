@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, string, irclib, sqlite3, re
+import urllib, simplejson, sys, string, irclib, sqlite3, re
 
 irclib.DEBUG = True
 
@@ -49,6 +49,14 @@ def query_all(table):
 	sql.close()
 	return phrase
 
+def google(key):
+	query = urllib.urlencode({'q' : key})
+	url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&%s' % (query)
+	search_results = urllib.urlopen(url)
+	json = simplejson.loads(search_results.read())
+	results = json['responseData']['results']
+	return results
+
 def handlePubMessage( connection, event ):
 	for riso in query_all('risos'):
 		riso = ' '.join( riso )
@@ -91,8 +99,13 @@ def handlePubMessage( connection, event ):
 		phrase = query( 'quotes' )
 		connection.privmsg( event.target(), '%s' % phrase )
 
+	if event.arguments()[0].find( '!google ' ) == 0:
+		results = google(event.arguments()[0].replace("!google ", ''))
+		for i in results:
+			connection.privmsg( event.target(), '%s' % i['url'].encode('utf8'))
+
 	if event.arguments()[0].find( '!help' ) == 0:
-		cmds = [ '!add_frase_naty [frase]', '!add_frase [frase]', '!add_quote [frase]', '!quote', '!help' ]
+		cmds = [ '!add_frase_naty [frase]', '!add_frase [frase]', '!google [frase]', '!add_quote [frase]', '!quote', '!help' ]
 		for cmd in cmds:
 			connection.action( event.target(), '%s' % cmd )
 
