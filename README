@@ -9,4 +9,6 @@
  - python >=  2.5
  - sqlite3
  - pysqlite
+ - python-urllib
+ - python-simplejson
  - python-irclib
