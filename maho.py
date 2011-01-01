@@ -49,9 +49,9 @@ def query_all(table):
 	sql.close()
 	return phrase
 
-def google(key):
+def google(key, type):
 	query = urllib.urlencode({'q' : key})
-	url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&%s' % (query)
+	url = 'http://ajax.googleapis.com/ajax/services/search/%s?v=1.0&%s' % (type, query)
 	search_results = urllib.urlopen(url)
 	json = simplejson.loads(search_results.read())
 	results = json['responseData']['results']
@@ -99,13 +99,17 @@ def handlePubMessage( connection, event ):
 		phrase = query( 'quotes' )
 		connection.privmsg( event.target(), '%s' % phrase )
 
-	if event.arguments()[0].find( '!google ' ) == 0:
-		results = google(event.arguments()[0].replace("!google ", ''))
+	if event.arguments()[0].find( '!google_img ' ) == 0:
+		results = google(event.arguments()[0].replace("!google_img ", ''), 'images')
+		for i in results:
+			connection.privmsg( event.target(), '%s' % i['url'].encode('utf8'))
+	elif event.arguments()[0].find( '!google ' ) == 0:
+		results = google(event.arguments()[0].replace("!google ", ''), 'web')
 		for i in results:
 			connection.privmsg( event.target(), '%s' % i['url'].encode('utf8'))
 
 	if event.arguments()[0].find( '!help' ) == 0:
-		cmds = [ '!add_frase_naty [frase]', '!add_frase [frase]', '!google [frase]', '!add_quote [frase]', '!quote', '!help' ]
+		cmds = [ '!add_frase_naty [frase]', '!add_frase [frase]', '!google [frase]', '!google_img [frase]', '!add_quote [frase]', '!quote', '!help' ]
 		for cmd in cmds:
 			connection.action( event.target(), '%s' % cmd )
 
