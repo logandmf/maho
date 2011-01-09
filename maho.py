@@ -72,7 +72,7 @@ def handlePubMessage( connection, event ):
 		phrase = query( 'phrases' )
 		connection.privmsg( event.target(), event.source().split('!')[0] + ': %s' % phrase )
 
-	if event.arguments()[0].find( '!add_frase_naty ' ) == 0 and event.source().split('!')[0].lower().find( 'nataliagood' ) == 0:
+	if event.arguments()[0].find( '!add_frase_naty ' ) == 0:
 		if event.source().split('!')[0].lower().find( 'totosoy' ) == 0:
 			result = add_frase_iso( 'natalia', event.arguments()[0].replace("!add_frase_naty ", '') )
 			connection.action( event.target(), '%s' % result )
@@ -86,6 +86,18 @@ def handlePubMessage( connection, event ):
 		else:
 			result = add_frase( 'phrases', event.arguments()[0].replace("!add_frase ", '') )
 			connection.action( event.target(), '%s' % result )
+
+	elif event.arguments()[0].find( '!add_feeling ' ) == 0:
+		if event.source().split('!')[0].lower().find( 'totosoy' ) == 0:
+			result = add_frase_iso( 'actions', event.arguments()[0].replace("!add_feeling ", '') )
+			connection.action( event.target(), '%s' % result )
+		else:
+			result = add_frase( 'actions', event.arguments()[0].replace("!add_feeling ", '') )
+			connection.action( event.target(), '%s' % result )
+
+	if event.arguments()[0].find( '!feelings' ) == 0:
+		phrase = query( 'actions' )
+		connection.action( event.target(), '%s ' % phrase + event.source().split('!')[0] )
 
 	if event.arguments()[0].find( '!add_quote ' ) == 0:
 		if event.source().split('!')[0].lower().find( 'totosoy' ) == 0:
@@ -109,7 +121,7 @@ def handlePubMessage( connection, event ):
 			connection.privmsg( event.target(), '%s' % i['url'].encode('utf8'))
 
 	if event.arguments()[0].find( '!help' ) == 0:
-		cmds = [ '!add_frase_naty [frase]', '!add_frase [frase]', '!google [frase]', '!google_img [frase]', '!add_quote [frase]', '!quote', '!help' ]
+		cmds = [ '!add_frase_naty [frase]', '!add_frase [frase]', '!add_feeling [frase]', '!feelings', '!google [frase]', '!google_img [frase]', '!add_quote [frase]', '!quote', '!help' ]
 		for cmd in cmds:
 			connection.action( event.target(), '%s' % cmd )
 
